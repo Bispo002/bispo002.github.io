@@ -8,19 +8,15 @@ export default function StickyNavbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // 650px é a média da altura da seção Hero (Projeto Acadêmico).
-      // Se o scroll passar disso, a navbar aparece.
-      if (window.scrollY > 450) {
+      if (window.scrollY > 550) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
       }
     };
 
-    // Adiciona o ouvinte de evento na rolagem da tela
     window.addEventListener('scroll', handleScroll);
-    
-    // Limpeza do evento para evitar vazamento de memória (Clean code)
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

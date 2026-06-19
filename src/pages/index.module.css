@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@400;500&display=swap');
 
-/* --- TOKENS CONVERTIDOS PARA VARIÁVEIS NATIVAS DO CSS --- */
 :root {
   --gold: #b5a55a;
   --gold-lt: #cfc080;
@@ -18,7 +17,6 @@
   --r-lg: 22px;
 }
 
-/* Escopo global da Landing Page para não quebrar a documentação do Docusaurus */
 :global(.landing-page) {
   font-family: 'DM Sans', system-ui, sans-serif;
   color: var(--text);
