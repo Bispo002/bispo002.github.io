@@ -1,0 +1,25 @@
+/* 1. Oculta o container completo da navbar na página inicial */
+.homepage .navbar {
+  display: none !important;
+}
+
+/* 2. Remove o espaço que a barra ocupa, garantindo que o conteúdo suba */
+.homepage .navbar-fixed {
+  display: none !important;
+}
+
+/* 3. Força a altura da navbar para 0, para não sobrar aquele "espaço em branco" */
+.homepage {
+  --ifm-navbar-height: 0px !important;
+}
+
+/* 4. Remove qualquer margem ou padding vindo da estrutura interna do tema */
+.homepage .main-wrapper {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* 5. Caso ainda sobre algum item (como o botão de tema ou links da navbar), escondemos o pai */
+.homepage .navbar__inner {
+  display: none !important;
+}

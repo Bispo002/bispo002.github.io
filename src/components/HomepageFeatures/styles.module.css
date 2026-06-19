@@ -1,0 +1,85 @@
+.stickyNav {
+  position: fixed;
+  top: -80px; /* Esconde a barra para cima inicialmente */
+  left: 0;
+  width: 100%;
+  height: 64px;
+  background: rgba(254, 252, 245, 0.95); /* Fundo acompanhando as cores do site */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid #e3d9c0;
+  z-index: 9999; /* Garante que fique por cima de todos os mocks */
+  transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* Animação suave de descida */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Classe ativada via JavaScript quando o scroll passa de 650px */
+.stickyNavVisible {
+  top: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1080px;
+  padding: 0 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #2a2620;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.linkDoc {
+  color: #5a5040;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.linkDoc:hover {
+  color: #8a7c3f;
+  text-decoration: none;
+}
+
+.btnGithub {
+  background: #b5a55a;
+  color: #ffffff;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.btnGithub:hover {
+  background: #8a7c3f;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .linkDoc {
+    display: none; /* Esconde o texto no mobile para não quebrar layout, deixa só o botão do Github */
+  }
+  .container {
+    padding: 0 20px;
+  }
+}
