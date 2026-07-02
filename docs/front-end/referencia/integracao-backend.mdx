@@ -1,0 +1,120 @@
+---
+sidebar_position: 3
+title: Integração com Backend
+---
+
+# Integração com Backend
+
+## URL base por ambiente
+
+| Ambiente | URL |
+|---|---|
+| Desenvolvimento | `http://localhost:8080` |
+| Produção | `https://extensao-unifil-production-82a8.up.railway.app` |
+
+## Mapa completo de endpoints
+
+### Usuários
+
+| Método | Endpoint | Body | Resposta | Front-end |
+|---|---|---|---|---|
+| POST | `/usuarios` | `{ nome, email, senha }` | Usuário criado | `TelaCadastroComponent` |
+| POST | `/usuarios/login` | `{ email, senha }` | `{ token }` | `TelaLoginComponent` |
+| GET | `/usuarios/me` | — | Dados do usuário | `TopbarComponent` |
+
+### Planos de aula
+
+| Método | Endpoint | Body / Params | Front-end |
+|---|---|---|---|
+| POST | `/planos-aula` | DTO do plano | `PlanoAulaComponent` (criar) |
+| PUT | `/planos-aula/{id}` | DTO do plano | `PlanoAulaComponent` (editar) |
+| GET | `/planos-aula/{id}` | — | Edição, PDF, Excel, duplicação |
+| GET | `/planos-aula/meus-planos` | — | `HomeComponent`, `ListaPlanosComponent` |
+| GET | `/planos-aula/disciplina/{disciplina}` | — | `PlanoService` (disponível, não usado na UI atual) |
+| DELETE | `/planos-aula/{id}` | — | `ListaPlanosComponent` |
+
+### BNCC
+
+| Método | Endpoint | Params | Front-end |
+|---|---|---|---|
+| GET | `/habilidades-bncc/buscar` | `?termo=` | `PlanoAulaComponent` |
+| GET | `/plano-habilidade-bncc` | — | `PlanoService.listarHabilidades()` |
+
+## Autenticação nas requisições
+
+Endpoints protegidos exigem:
+
+```
+Authorization: Bearer <jwt_token>
+```
+
+O token é obtido no login e armazenado em `localStorage` com a chave `token`.
+
+## Disciplinas aceitas
+
+Valores enum enviados ao backend (campo `disciplina`):
+
+```
+ARTE
+CIENCIAS
+COMPUTACAO
+EDUCACAO_FISICA
+ENSINO_RELIGIOSO
+GEOGRAFIA
+HISTORIA
+LINGUA_INGLESA
+LINGUA_PORTUGUESA
+MATEMATICA
+CIENCIAS_DA_NATUREZA_E_SUAS_TECNOLOGIAS
+CIENCIAS_HUMANAS_E_SOCIAIS_APLICADAS
+COMPUTACAO_ENSINO_MEDIO
+LINGUAGENS_E_SUAS_TECNOLOGIAS
+MATEMATICA_E_SUAS_TECNOLOGIAS
+```
+
+## Tratamento de erros
+
+| Código HTTP | Contexto | Comportamento no front |
+|---|---|---|
+| 401 | Token inválido/ausente | Erro no console; sem redirect automático |
+| 409 | Email duplicado no cadastro | Mensagem amigável ao usuário |
+| Outros | Falhas genéricas | Mensagem genérica ou `console.error` |
+
+## Exportação (processamento local)
+
+PDF e Excel são gerados **no navegador** após buscar o plano completo via `GET /planos-aula/{id}`:
+
+- **PDF** — `jsPDF` com layout customizado (seções, cabeçalho, quebra de página)
+- **Excel** — `xlsx` (SheetJS) com planilha estruturada
+
+Nenhum endpoint de exportação é chamado no backend.
+
+## Diagrama de dependências API
+
+```mermaid
+graph LR
+    subgraph Front-end
+        Login[TelaLogin]
+        Cadastro[TelaCadastro]
+        Topbar[Topbar]
+        Home[Home]
+        Lista[ListaPlanos]
+        Plano[PlanoAula]
+    end
+
+    subgraph API
+        U[/usuarios]
+        UL[/usuarios/login]
+        UM[/usuarios/me]
+        PA[/planos-aula]
+        BNCC[/habilidades-bncc/buscar]
+    end
+
+    Login --> UL
+    Cadastro --> U
+    Topbar --> UM
+    Home --> PA
+    Lista --> PA
+    Plano --> PA
+    Plano --> BNCC
+```

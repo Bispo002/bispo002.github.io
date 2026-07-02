@@ -1,0 +1,86 @@
+---
+sidebar_position: 2
+title: Testes
+---
+
+# Testes
+
+## Framework
+
+| Ferramenta | Função |
+|---|---|
+| Karma | Test runner |
+| Jasmine | Framework de assertions |
+| Chrome Launcher | Browser headless/GUI para execução |
+
+## Executar testes
+
+```bash
+npm test
+```
+
+## Arquivos de teste
+
+Cada componente e serviço possui arquivo `.spec.ts` correspondente:
+
+```
+src/app/
+├── app.component.spec.ts
+├── home/home.component.spec.ts
+├── landing-page/landing-page.component.spec.ts
+├── lista-planos/lista-planos.component.spec.ts
+├── plano-aula/plano-aula.component.spec.ts
+├── tela-cadastro/tela-cadastro.component.spec.ts
+├── tela-login/tela-login.component.spec.ts
+├── tela-recuperar-senha/tela-recuperar-senha.component.spec.ts
+├── components/topbar/topbar.component.spec.ts
+└── services/plano-service.service.spec.ts
+```
+
+## Configuração
+
+Definida em `angular.json` → target `test`:
+
+- `tsConfig`: `tsconfig.spec.json`
+- Polyfills: `zone.js`, `zone.js/testing`
+- Estilos globais: `src/styles.scss`
+
+## TypeScript para testes
+
+Arquivo `tsconfig.spec.json` estende a config base com tipos Jasmine.
+
+## Cobertura
+
+O pacote `karma-coverage` está configurado como dependência de desenvolvimento. Para gerar relatório de cobertura, ajuste a configuração do Karma conforme necessidade do projeto.
+
+## Boas práticas recomendadas
+
+### Testar componentes standalone
+
+```typescript
+await TestBed.configureTestingModule({
+  imports: [MeuComponente]  // import direto, sem declarations
+}).compileComponents();
+```
+
+### Mock de serviços HTTP
+
+Utilizar `HttpClientTestingModule` para isolar chamadas REST:
+
+```typescript
+imports: [HttpClientTestingModule]
+```
+
+### Áreas prioritárias para cobertura
+
+| Área | Prioridade | Motivo |
+|---|---|---|
+| AuthService | Alta | Fluxo crítico de autenticação |
+| AuthGuard | Alta | Proteção de rotas |
+| PlanoService | Alta | CRUD principal |
+| PlanoAulaComponent | Média | Lógica BNCC e formulário |
+| ListaPlanosComponent | Média | Exportação PDF/Excel |
+
+## End-to-end
+
+Não há framework E2E configurado. O README menciona `ng e2e`, porém nenhum runner (Cypress, Playwright) está instalado.

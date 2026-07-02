@@ -1,0 +1,79 @@
+---
+sidebar_position: 1
+title: Instalação
+---
+
+# Instalação
+
+## Pré-requisitos
+
+| Requisito | Versão mínima recomendada |
+|---|---|
+| Node.js | 18.x ou superior |
+| npm | 9.x ou superior |
+| Angular CLI | 19.x (opcional, via `npx`) |
+
+O backend da aplicação deve estar em execução para funcionalidades autenticadas. Em desenvolvimento, a URL padrão é `http://localhost:8080`.
+
+## Clonar o repositório
+
+```bash
+git clone <url-do-repositorio>
+cd front-gerenciador-planos-aula
+```
+
+## Instalar dependências
+
+```bash
+npm install
+```
+
+## Executar em modo de desenvolvimento
+
+```bash
+npm start
+# equivalente a: ng serve
+```
+
+A aplicação ficará disponível em [http://localhost:4200](http://localhost:4200). Alterações nos arquivos fonte disparam recompilação automática (hot reload).
+
+## Build de produção
+
+```bash
+npm run build
+# equivalente a: ng build
+```
+
+Os artefatos são gerados em:
+
+```
+dist/front-gerenciador-planos-aula/
+```
+
+## Executar testes unitários
+
+```bash
+npm test
+# equivalente a: ng test
+```
+
+Os testes rodam via **Karma** com o launcher **Chrome**.
+
+## Scripts disponíveis
+
+| Script | Comando | Descrição |
+|---|---|---|
+| `start` | `ng serve` | Servidor de desenvolvimento |
+| `build` | `ng build` | Build de produção |
+| `watch` | `ng build --watch --configuration development` | Build contínuo em dev |
+| `test` | `ng test` | Testes unitários |
+
+## Gerar novos artefatos (scaffolding)
+
+```bash
+ng generate component nome-do-componente
+ng generate service nome-do-servico
+ng generate --help
+```
+
+Todos os componentes gerados pelo CLI seguem o padrão **standalone** com estilos em **SCSS** (configurado em `angular.json`).

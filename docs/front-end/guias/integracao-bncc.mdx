@@ -1,0 +1,104 @@
+---
+sidebar_position: 3
+title: Integração BNCC
+---
+
+# Integração BNCC
+
+A Base Nacional Comum Curricular (BNCC) é integrada ao fluxo de criação/edição de planos de aula, permitindo vincular habilidades pedagógicas oficiais.
+
+## Arquitetura da integração
+
+```
+PlanoAulaComponent
+       │
+       ├── BnccService.buscarHabilidadesPorTermo(termo)
+       │         └── GET /habilidades-bncc/buscar?termo=
+       │
+       └── PlanoService.criar/atualizar(dto)
+                 └── habilidadesBnccIds: string[]
+```
+
+## Busca de habilidades
+
+### Comportamento
+
+| Condição | Resultado |
+|---|---|
+| Termo com menos de 3 caracteres | Lista vazia (sem requisição) |
+| Termo ≥ 3 caracteres | Requisição após 400ms de debounce |
+| Termo alterado rapidamente | Requisição anterior cancelada (`switchMap`) |
+
+### Implementação
+
+```typescript
+this.buscaBnccControl.valueChanges.pipe(
+  debounceTime(400),
+  distinctUntilChanged(),
+  switchMap(termo => {
+    if (!termo || termo.length < 3) return of([]);
+    return this.bnccService.buscarHabilidadesPorTermo(termo);
+  })
+).subscribe(resultados => this.sugestoesBncc = resultados);
+```
+
+### Formato de resposta
+
+```typescript
+[
+  {
+    codigo: "EF06MA07",
+    descricao: "(EF06MA07) Comparar, ordenar, converter e operar com números racionais..."
+  }
+]
+```
+
+## Seleção de habilidades
+
+1. Usuário clica em uma sugestão
+2. O código BNCC é extraído da descrição via regex `\(([^)]+)\)`
+3. A habilidade é adicionada a `habilidadesSelecionadas[]` (sem duplicatas)
+4. Os IDs são sincronizados no campo `habilidadesBnccIds` do formulário
+
+### Estrutura interna de habilidade selecionada
+
+```typescript
+{
+  id: string;
+  codigo: string;
+  descricao: string;
+  codigoBadge: string;  // extraído da descrição para exibição
+}
+```
+
+## Remoção de habilidades
+
+O método `removerHabilidade(id)` filtra `habilidadesSelecionadas` e atualiza `habilidadesBnccIds`.
+
+## Persistência
+
+No save, apenas os **IDs** são enviados ao backend:
+
+```typescript
+habilidadesBnccIds: this.habilidadesSelecionadas.map(h => h.id)
+```
+
+## Carregamento em modo edição
+
+Ao editar um plano, o backend pode retornar habilidades em `habilidades` ou `habilidadesBncc`. O componente normaliza ambos:
+
+```typescript
+const listaHabilidades = dados.habilidades || dados.habilidadesBncc;
+```
+
+## Exibição em exportações
+
+Nas exportações PDF e Excel, os códigos BNCC são extraídos de:
+
+1. `h.codigo` (se disponível)
+2. `h.codigoBadge` (se disponível)
+3. Regex na `descricao` (fallback)
+
+## Endpoint auxiliar
+
+`PlanoService.listarHabilidades()` chama `GET /plano-habilidade-bncc`, porém **não é utilizado** na interface atual. A busca ativa usa exclusivamente `BnccService`.
