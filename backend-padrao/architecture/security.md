@@ -1,0 +1,95 @@
+---
+sidebar_position: 2
+title: Segurança
+---
+
+# Segurança
+
+A autenticação é **stateless** baseada em **JWT** (JSON Web Token), sem sessão server-side.
+
+## Rotas públicas
+
+Não exigem token JWT:
+
+| Método | Rota | Descrição |
+|---|---|---|
+| `POST` | `/usuarios` | Cadastro de usuário |
+| `POST` | `/usuarios/login` | Login e obtenção do token |
+| — | `/error` | Tratamento de erros Spring |
+
+Todas as demais rotas exigem autenticação.
+
+## JwtAuthenticationFilter
+
+Filtro `OncePerRequestFilter` registrado antes do `UsernamePasswordAuthenticationFilter`.
+
+**Comportamento:**
+
+1. Requisições `OPTIONS` (preflight CORS) são ignoradas pelo filtro.
+2. Rotas `/usuarios` e `/usuarios/login` passam direto.
+3. Demais rotas exigem header `Authorization: Bearer <token>`.
+4. Token ausente → `401 Token não encontrado`.
+5. Token inválido/expirado → `401 Token inválido ou expirado`.
+6. Token válido → *claims* injetados em `request.setAttribute("claims", claims)`.
+
+## JwtService
+
+Responsável por gerar e validar tokens com **HMAC-SHA** (`Keys.hmacShaKeyFor`).
+
+### Claims do token
+
+| Claim | Conteúdo |
+|---|---|
+| `sub` (subject) | UUID do usuário |
+| `nome` | Nome do professor |
+| `email` | E-mail do professor |
+| `iat` | Data de emissão |
+| `exp` | Data de expiração (1h após emissão) |
+
+### Exemplo de resposta de login
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9..."
+}
+```
+
+## SecurityConfig
+
+```java
+.authorizeHttpRequests(auth -> auth
+    .requestMatchers("/usuarios/login", "/usuarios", "/error").permitAll()
+    .anyRequest().authenticated()
+)
+.sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+```
+
+- **CSRF:** desabilitado (API REST stateless).
+- **CORS:** configurado para front-end Angular local e Vercel.
+
+### CORS
+
+| Configuração | Valor |
+|---|---|
+| Origens | `http://localhost:4200`, `https://front-gerenciador-planos-aula-c2ez.vercel.app` |
+| Métodos | GET, POST, PUT, DELETE, OPTIONS, PATCH |
+| Headers | Authorization, Content-Type |
+| Credentials | `true` |
+
+## Senhas
+
+- Cadastro: senha criptografada com BCrypt antes de persistir.
+- Login: comparação via `passwordEncoder.matches`.
+- Atualização de senha: exige `senhaAtual` correta antes de aplicar `novaSenha`.
+
+## Endpoint `/usuarios/me`
+
+Retorna os dados do usuário autenticado a partir dos *claims* do token, sem consulta extra ao banco:
+
+```json
+{
+  "id": "uuid-do-usuario",
+  "nome": "Maria Silva",
+  "email": "maria@email.com"
+}
+```

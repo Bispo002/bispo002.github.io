@@ -1,0 +1,8 @@
+{
+  "label": "API REST",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Referência completa dos endpoints HTTP."
+  }
+}

@@ -1,0 +1,97 @@
+---
+sidebar_position: 2
+title: Planos de Aula
+description: Guia funcional de criação, edição e exportação de planos
+---
+
+# Planos de Aula
+
+## Visão funcional
+
+Um plano de aula no PlanoFácil é composto por informações pedagógicas estruturadas e habilidades BNCC vinculadas. O formulário está centralizado no `PlanoAulaComponent`.
+
+## Criar um plano
+
+1. Acesse `/planos/novo` (via Home ou menu lateral)
+2. Preencha **série** e **disciplina** (campos obrigatórios)
+3. Opcionalmente preencha: data, duração, tema, conteúdo, objetivos, materiais, metodologia, avaliação e referências
+4. Busque habilidades BNCC digitando ao menos 3 caracteres
+5. Selecione habilidades na lista de sugestões
+6. Clique em **Salvar**
+
+O front-end envia:
+
+```typescript
+{
+  serie: "6º Ano",
+  disciplina: "MATEMATICA",
+  data: "2026-07-01",
+  duracao: 50,
+  tema: "Frações equivalentes",
+  conteudo: "...",
+  objetivos: "...",
+  materiais: "...",
+  metodologia: "...",
+  avaliacao: "...",
+  referencia: "...",
+  habilidadesBnccIds: ["id1", "id2"]
+}
+```
+
+## Editar um plano
+
+1. Em `/planos`, clique em **Editar** no plano desejado
+2. O componente detecta o parâmetro `:id` na rota e entra em **modo edição**
+3. Dados são carregados via `GET /planos-aula/{id}`
+4. Habilidades BNCC são mapeadas e exibidas como badges
+5. Ao salvar, é executado `PUT /planos-aula/{id}`
+
+## Duplicar um plano
+
+1. Em `/planos`, clique em **Duplicar**
+2. O front-end busca o plano completo
+3. Cria uma cópia com tema `"<tema original> (Cópia)"`
+4. Envia `POST /planos-aula` com os mesmos dados (novos IDs de habilidades preservados)
+
+## Excluir um plano
+
+1. Confirmação via `confirm()` do browser
+2. `DELETE /planos-aula/{id}`
+3. Lista atualizada localmente (remove item do array)
+
+## Exportar PDF
+
+Geração client-side com **jsPDF**:
+
+**Seções incluídas:**
+
+- Cabeçalho com logo textual "PlanoFácil" e data de geração
+- Título "PLANO DE AULA" + tema
+- Grid de metadados (disciplina, série, data, duração)
+- Conteúdo curricular
+- Objetivos de aprendizagem
+- Habilidades BNCC
+- Metodologia / passo a passo
+- Recursos e materiais
+- Processo de avaliação
+- Referências bibliográficas
+
+Suporte a quebra de página automática para textos longos.
+
+**Nome do arquivo:** `Plano_Aula_{tema}.pdf`
+
+## Exportar Excel
+
+Geração client-side com **SheetJS (xlsx)**:
+
+Planilha com duas colunas (rótulo / valor) contendo todas as seções do plano.
+
+**Nome do arquivo:** `Plano_Aula_{tema}.xlsx`
+
+## Limpar formulário
+
+O botão "Limpar" reseta o `FormGroup` e remove todas as habilidades BNCC selecionadas. Disponível apenas no modo criação.
+
+## Disciplinas suportadas
+
+O dropdown de disciplinas cobre componentes curriculares do Ensino Fundamental e áreas de conhecimento do Ensino Médio. O valor enviado ao backend é o enum em `UPPER_SNAKE_CASE`; a exibição usa o nome amigável em português.

@@ -1,47 +1,96 @@
 ---
 sidebar_position: 1
+title: Introdução
+---
+# 1. Introdução
+
+Esse projeto consiste em um gerenciador de planos de aula alinhado com a BNCC (Banco Nacional Comum Curricular).
+
+---
+## 1.1. Objetivo do PlanoFácil
+
+O objetivo desse projeto é facilitar a jornada de criação dos planos de aulas de professores do ensino fundamental 1, até o fim do ensino médio. Ele possibilita que os professores planejem suas aulas de acordo com as necessidades curriculares definidas pela BNCC, e também consigam exportar esse plano para dois tipos de arquivos: .pdf, e .xlsx (Excel). 
+
+A forma com que isso é feita será descrita mais adiante no documento, em suma, o usuário se registrará no site, e com sua conta ele terá seus planos, assim como seu perfil, onde poderá criar, excluir, editar e exportar os documentos.
+
 ---
 
-# Tutorial Intro
+## 2. Fluxo de usuário
+Essa seção do documento refere-se ao primeiro acesso do usuário no site.
 
-Let's discover **Docusaurus in less than 5 minutes**.
+### 2.1. Login e Registro
+Ao entrar no site, o usuário se encontra na landing page, página padrão do projeto, e no mesmo possui uma breve explicação de como o site funciona, assim como opções para criar conta ou realizar login diretamente.
 
-## Getting Started
+Ao clicar em uma das duas opções, ele será direcionado para a tela de login, onde caso possua uma conta, poderá realizar o login normalmente, ou poderá criar uma conta, utilizando o seu e-mail, e uma senha de no mínimo 8 caracteres, com 1 caracter especial, 1 caracter em maiúsculo, e 1 caractere de simbolo especial.
 
-Get started by **creating a new site**.
+---
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+### 2.2. Home Page
+Ao se registrar/logar, o usuário será redirecionado para a home do site, onde ele possui a opção de sair do sistema, criar um novo plano, verificar os planos já existentes e um menu lateral que pode ser clicado para mostrar as opções de navegação:
+- Home: leva o usuário de volta a homepage;
+- Criar Plano de Aula: leva o usuário para a tela de criação de plano de aula;
+- Meus planos: leva o usuário para a tela onde seus planos de aula ficam salvos;
+- Perfil: abaixo, existe a opção de perfil;
+- Sair da conta: botão onde o usuário pode estar saindo do sistema.
 
-### What you'll need
+---
 
-- [Node.js](https://nodejs.org/en/download/) version 20.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+### 2.3. Tela de criação de plano de aula
+Ao entrar na tela de criação de plano de aulas, o usuário terá as seguintes divisões:
 
-## Generate a new site
+#### 2.3.1. Informações gerais: 
+Onde o usuário colocará as informações gerais de seu plano, como:
+- Sere / Ano: série de ensino da aula;
+- Disciplina: menu dropdown com as opções de displinas de:
+    - Arte;
+    - Ciências;
+    - Computação;
+    - Educação Física;
+    - Ensino Religioso;
+    - Geografia;
+    - História;
+    - Língua Inglesa;
+    - Língua Portuguesa;
+    - Matemática;
+    - Ciências da Natureza e suas Tecnologias;
+    - Ciências Humanas e Sociais Aplicadas;
+    - Computação (Ensino Médio);
+    - Linguagens e suas Tecnologias;
+    - Matemática e suas Tecnologias;
+- Data: data na qual a aula será aplicada;
+- Duração (minutos): duração dessa aula em minutos;
 
-Generate a new Docusaurus site using the **classic template**.
+#### 2.3.2. Estrutura da Aula:
+Onde o usuário vai estruturar sua aula com os seguintes tópicos:
+- Tema da Aula: assunto que principal que será abordado;
+- Conteúdo: tópicos abordados dentro dessa aula, de acordo com o tema;
+- Objetivos: o que os alunos devem aprender durante essa aula.
 
-The classic template will automatically be added to your project after you run the command:
+Todos esses campos são de texto e o usuário tem a liberdade de escolher o que mais se encaixa com o seu contexto.
 
-```bash
-npm init docusaurus@latest my-website classic
-```
+#### 2.3.3. Metodologia e Base:
+Nessa seção o usuário terá os seguintes campos:
+- Metodologia: como a aula será conduzida. De que forma o professor vai passar o conhecimento para o aluno;
+- Habilidades BNCC (pesquisa de campo): o usuário pesquisará uma habilidade alinhada à BNCC no qual melhor se encaixa com a sua aula;
+- Recursos e materiais: quais serão os recursos utilizados na aula (exemplo: lousa, projetor, apostila, etc.)
+- Avaliação: como esses alunos serão avaliados, de qual forma o professor irá realizar isso;
+- Referências: quais as referências o professor utilizou como base para a criação dessa aula.
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+#### 2.3.4. Opções gerais:
+Abaixo, na parte inferior do formulário, existem duas opções:
+- Limpar: limpa todos os dados do plano, deixando-o no template padrão;
+- Salvar Plano: salva o plano, e o transfere para a tela "Meus Planos"
 
-The command also installs all necessary dependencies you need to run Docusaurus.
+---
 
-## Start your site
+### 3. Tela Meus Planos:
+Aqui fica o acervo de planos que o usuário possui, onde o mesmo aparece como um card clicável, cujo contém o nome da matéria aplicada, a data da aula, a série/ano onde essa aula será aplicada, e opções localizadas na parte de baixo do card, que o usuário tem liberdade de escolher:
+- Editar Plano (ícone de lápis): volta o usuário para a tela de criação de planos (seção 2.3.), porém agora com as informações já preenchidas que podem ser mudadas de acordo com a necessidade. **Qualquer informação alterada será sobrescrita por uma nova.**
 
-Run the development server:
+- Duplicar (ícone de dois papéis sobrepostos): permite que o usuário duplique o plano e altere-o da forma desejada. **Esse plano será salvo com informações novas, e o plano utilizado como base será mantido.**
 
-```bash
-cd my-website
-npm run start
-```
+- Exportar para PDF (ícone escrito PDF): ao clicar nesse botão, o site gerará um arquivo .pdf do plano que iniciará o download automáticamente. Esse arquivo possui os dados do plano em questão e o mesmo se mantém dentro da plataforma.
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
+- Exportar para Excel/.xlsx (ícone de papel com X): ao clicar nesse botão, o site gerará um arquivo .xlsx com as informações do plano, e fará o download automaticamente.
 
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+- Excluir plano (ícone de lixeira): ao clicar nesse ícone, um pop-up aparecerá na tela perguntando se o usuário deseja excluir de fato o plano. Caso sim, o mesmo será excluido (**O PLANO SERÁ EXCLUÍDO PERMANENTEMENTE, SEM RECUPERAÇÃO**). Caso não, ele retorna à página.

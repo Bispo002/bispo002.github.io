@@ -1,0 +1,124 @@
+---
+sidebar_position: 4
+title: Habilidades BNCC
+---
+
+# API — Habilidades BNCC
+
+**Base path:** `/habilidades-bncc`
+
+Todas as rotas exigem autenticação JWT.
+
+Catálogo de habilidades da Base Nacional Comum Curricular, organizadas por disciplina.
+
+## POST /habilidades-bncc
+
+Cadastra uma nova habilidade BNCC.
+
+**Body:** `HabilidadeBNCC`
+
+```json
+{
+  "descricao": "(EF06MA09) Resolver e elaborar problemas que envolvam o cálculo da fração de uma quantidade",
+  "objetoConhecimento": "Números racionais na forma fracionária",
+  "unidadeTematica": "Números",
+  "disciplina": "MATEMATICA"
+}
+```
+
+**Resposta `200 OK`:** objeto `HabilidadeBNCC` com `id` gerado.
+
+---
+
+## GET /habilidades-bncc
+
+Lista todas as habilidades cadastradas.
+
+**Resposta `200 OK`:** array de `HabilidadeBNCC`
+
+---
+
+## GET /habilidades-bncc/{id}
+
+Busca uma habilidade pelo UUID.
+
+**Respostas:**
+
+| Status | Descrição |
+|---|---|
+| `200 OK` | Habilidade encontrada |
+| `404 Not Found` | Habilidade não encontrada |
+
+---
+
+## GET /habilidades-bncc/disciplina/{disciplina}
+
+Filtra habilidades por disciplina.
+
+**Parâmetros:**
+
+| Nome | Tipo | Descrição |
+|---|---|---|
+| `disciplina` | `DisciplinaEnum` (path) | Ex.: `LINGUA_PORTUGUESA` |
+
+**Resposta `200 OK`:** array de `HabilidadeBNCC`
+
+---
+
+## GET /habilidades-bncc/buscar?termo={termo}
+
+Busca habilidades por termo na descrição (case-insensitive). Destinado ao **autocomplete** do front-end.
+
+**Parâmetros:**
+
+| Nome | Tipo | Descrição |
+|---|---|---|
+| `termo` | string (query) | Texto parcial da descrição |
+
+**Exemplo:**
+
+```
+GET /habilidades-bncc/buscar?termo=EF06MA
+```
+
+**Resposta `200 OK`:** array de `HabilidadeBNCC` correspondentes.
+
+---
+
+## PUT /habilidades-bncc/{id}
+
+Atualiza uma habilidade existente.
+
+**Body:** `HabilidadeBNCC` com os campos atualizados.
+
+**Respostas:**
+
+| Status | Descrição |
+|---|---|
+| `200 OK` | Habilidade atualizada |
+| `404 Not Found` | Habilidade não encontrada |
+
+---
+
+## DELETE /habilidades-bncc/{id}
+
+Remove uma habilidade do catálogo.
+
+**Respostas:**
+
+| Status | Descrição |
+|---|---|
+| `204 No Content` | Habilidade removida |
+| `404 Not Found` | Habilidade não encontrada |
+
+---
+
+## Modelo HabilidadeBNCC
+
+| Campo | Tipo | Obrigatório |
+|---|---|---|
+| `id` | UUID | gerado automaticamente |
+| `descricao` | string | sim |
+| `objetoConhecimento` | string | não |
+| `unidadeTematica` | string | não |
+| `disciplina` | `DisciplinaEnum` | sim |

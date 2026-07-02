@@ -212,4 +212,5 @@
 @media (max-width: 600px) {
   :global(.features__grid), :global(.steps) { grid-template-columns: 1fr; }
   :global(.steps) { max-width: 320px; margin-inline: auto; }
+  :global(.mockup__tags) { justify-content: center; }
 }

@@ -1,0 +1,84 @@
+---
+sidebar_position: 3
+title: Rotas e Navegação
+description: Mapa de rotas, guards e títulos de página
+---
+
+# Rotas e Navegação
+
+As rotas são definidas em `src/app/app.routes.ts`.
+
+## Mapa de rotas
+
+| Rota | Componente | Auth | Título da página |
+|---|---|---|---|
+| `/` | `LandingPageComponent` | Não | — |
+| `/login` | `TelaLoginComponent` | Não | — |
+| `/cadastro` | `TelaCadastroComponent` | Não | — |
+| `/recuperar` | `TelaRecuperarSenhaComponent` | Não | — |
+| `/home` | `HomeComponent` | Sim | — |
+| `/planos` | `ListaPlanosComponent` | Sim | Meus Planos - PlanoFácil |
+| `/planos/novo` | `PlanoAulaComponent` | Sim | Novo Plano - PlanoFácil |
+| `/planos/editar/:id` | `PlanoAulaComponent` | Sim | Editar Plano - PlanoFácil |
+| `/**` | — | — | Redireciona para `/` |
+
+## Definição no código
+
+```typescript
+export const routes: Routes = [
+  { path: '', component: LandingPageComponent },
+  { path: 'login', component: TelaLoginComponent },
+  { path: 'cadastro', component: TelaCadastroComponent },
+  { path: 'recuperar', component: TelaRecuperarSenhaComponent },
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'planos', component: ListaPlanosComponent, title: 'Meus Planos - PlanoFácil', canActivate: [AuthGuard] },
+  { path: 'planos/novo', component: PlanoAulaComponent, title: 'Novo Plano - PlanoFácil', canActivate: [AuthGuard] },
+  { path: 'planos/editar/:id', component: PlanoAulaComponent, title: 'Editar Plano - PlanoFácil', canActivate: [AuthGuard] },
+  { path: '**', redirectTo: '' }
+];
+```
+
+## Áreas da aplicação
+
+### Área pública
+
+Acessível sem autenticação:
+
+- **Landing page** — apresentação do produto PlanoFácil
+- **Login** — autenticação com email/senha
+- **Cadastro** — registro de novo usuário (integrado ao backend)
+- **Recuperar senha** — formulário local (sem integração com API)
+
+### Área autenticada
+
+Protegida pelo `AuthGuard`:
+
+- **Home** — dashboard com contagem de planos e ações rápidas
+- **Lista de planos** — visualização, edição, exclusão, duplicação e exportação
+- **Plano de aula** — formulário de criação e edição
+
+## Navegação lateral (Topbar)
+
+O componente `TopbarComponent` é exibido nas páginas autenticadas e oferece:
+
+| Item | Rota |
+|---|---|
+| Home | `/home` |
+| Criar Plano de Aula | `/planos/novo` |
+| Meus Planos | `/planos` |
+
+## Fluxo de navegação típico
+
+```
+/ (landing)
+  ├── /cadastro → /login → /home
+  └── /login → /home
+        └── /planos/novo → /planos
+              └── /planos/editar/:id
+```
+
+## Observações
+
+- A rota `/home` aparece duplicada no arquivo de rotas (entrada redundante sem impacto funcional).
+- Rotas desconhecidas redirecionam para a landing page (`**` → `''`).
+- O logout redireciona manualmente para `/login` via `TopbarComponent`.

@@ -1,0 +1,148 @@
+---
+sidebar_position: 3
+title: Planos de aula
+---
+
+# API — Planos de aula
+
+**Base path:** `/planos-aula`
+
+Todas as rotas exigem autenticação JWT.
+
+## POST /planos-aula
+
+Cria um novo plano de aula associado ao usuário autenticado.
+
+O `usuarioId` é extraído automaticamente do token JWT (*claim* `sub`).
+
+**Body:** `PlanoAulaDTO`
+
+```json
+{
+  "serie": "6º ano",
+  "disciplina": "MATEMATICA",
+  "data": "2026-07-15",
+  "duracao": 50,
+  "tema": "Frações",
+  "conteudo": "Introdução às frações equivalentes",
+  "objetivos": "Identificar frações equivalentes",
+  "materiais": "Material dourado",
+  "metodologia": "Aula expositiva dialogada",
+  "avaliacao": "Lista de exercícios",
+  "referencia": "BNCC EF06MA09",
+  "habilidadesBnccIds": ["uuid-habilidade-1"]
+}
+```
+
+**Resposta `201 Created`:** objeto `PlanoAula` completo (inclui `id`, `createdAt`, `updatedAt` e lista `habilidades`).
+
+---
+
+## GET /planos-aula
+
+Lista todos os planos de aula do sistema.
+
+**Resposta `200 OK`:** array de `PlanoAula`
+
+---
+
+## GET /planos-aula/meus-planos
+
+Lista apenas os planos do usuário autenticado.
+
+**Resposta `200 OK`:** array de `PlanoAula`
+
+---
+
+## GET /planos-aula/{id}
+
+Busca um plano pelo UUID.
+
+**Respostas:**
+
+| Status | Descrição |
+|---|---|
+| `200 OK` | Plano encontrado |
+| `404 Not Found` | Plano não encontrado |
+
+---
+
+## GET /planos-aula/disciplina/{disciplina}
+
+Filtra planos por disciplina.
+
+**Parâmetros:**
+
+| Nome | Tipo | Descrição |
+|---|---|---|
+| `disciplina` | `DisciplinaEnum` (path) | Ex.: `MATEMATICA`, `HISTORIA` |
+
+**Resposta `200 OK`:** array de `PlanoAula`
+
+---
+
+## PUT /planos-aula/{id}
+
+Atualiza um plano existente.
+
+**Body:** `PlanoAulaDTO`
+
+**Comportamento das habilidades:**
+
+1. Campos básicos são sobrescritos com os valores do DTO.
+2. A lista de habilidades antigas é **limpa** (`clear()`).
+3. Novas habilidades são carregadas pelos IDs informados em `habilidadesBnccIds`.
+
+**Respostas:**
+
+| Status | Descrição |
+|---|---|
+| `200 OK` | Plano atualizado |
+| `404 Not Found` | Plano não encontrado |
+
+---
+
+## DELETE /planos-aula/{id}
+
+Remove um plano de aula.
+
+**Respostas:**
+
+| Status | Descrição |
+|---|---|
+| `204 No Content` | Plano removido |
+| `404 Not Found` | Plano não encontrado |
+
+---
+
+## Exemplo de resposta — PlanoAula
+
+```json
+{
+  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "serie": "6º ano",
+  "disciplina": "MATEMATICA",
+  "data": "2026-07-15",
+  "duracao": 50,
+  "tema": "Frações",
+  "conteudo": "Introdução às frações equivalentes",
+  "objetivos": "Identificar frações equivalentes",
+  "materiais": "Material dourado",
+  "metodologia": "Aula expositiva dialogada",
+  "avaliacao": "Lista de exercícios",
+  "referencia": "BNCC EF06MA09",
+  "createdAt": "2026-07-01T10:00:00",
+  "updatedAt": "2026-07-01T10:00:00",
+  "habilidades": [
+    {
+      "id": "uuid-habilidade-1",
+      "descricao": "(EF06MA09) Resolver e elaborar problemas...",
+      "objetoConhecimento": "Números racionais",
+      "unidadeTematica": "Números",
+      "disciplina": "MATEMATICA"
+    }
+  ]
+}
+```
+
+> O campo `usuario` não aparece na resposta JSON por estar anotado com `@JsonIgnore`.

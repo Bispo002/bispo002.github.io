@@ -1,0 +1,60 @@
+---
+sidebar_position: 1
+title: Instalação
+---
+
+# Instalação
+
+## Pré-requisitos
+
+- **JDK 21** ou superior
+- **Maven 3.8+** (ou use o wrapper `./mvnw` incluído no projeto)
+- **PostgreSQL 14+** com banco criado e script de schema aplicado
+
+## Clonar e compilar
+
+```bash
+git clone <url-do-repositorio>
+cd extensao-unifil
+./mvnw clean install
+```
+
+No Windows:
+
+```powershell
+.\mvnw.cmd clean install
+```
+
+## Banco de dados
+
+Execute o script `db-script.sql` na raiz do projeto para criar as tabelas, o tipo enum `disciplina_enum` e os relacionamentos necessários.
+
+Tabelas criadas:
+
+| Tabela | Descrição |
+|---|---|
+| `usuarios` | Professores cadastrados no sistema |
+| `planos_aula` | Planos de aula vinculados a um usuário |
+| `habilidades_bncc` | Catálogo de habilidades da BNCC |
+| `plano_habilidade_bncc` | Tabela de junção plano ↔ habilidade |
+
+> O Hibernate está configurado com `ddl-auto: none`, ou seja, **o schema deve ser criado manualmente** via SQL.
+
+## Executar a aplicação
+
+Configure as [variáveis de ambiente](./configuration) e inicie:
+
+```bash
+./mvnw spring-boot:run
+```
+
+Ou execute a classe `GerenciadorPlanosAulaApplication` diretamente pela IDE.
+
+A API ficará disponível em `http://localhost:8080`.
+
+## Front-ends permitidos (CORS)
+
+Origens autorizadas na configuração de segurança:
+
+- `http://localhost:4200` — desenvolvimento local (Angular)
+- `https://front-gerenciador-planos-aula-c2ez.vercel.app` — produção (Vercel)

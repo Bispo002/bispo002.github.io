@@ -1,0 +1,8 @@
+{
+  "label": "Primeiros passos",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Como instalar, configurar e executar o back-end localmente."
+  }
+}

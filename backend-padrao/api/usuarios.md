@@ -1,0 +1,178 @@
+---
+sidebar_position: 2
+title: Usuários
+---
+
+# API — Usuários
+
+**Base path:** `/usuarios`
+
+## POST /usuarios
+
+Cadastra um novo usuário.
+
+**Autenticação:** não requerida
+
+**Body:** `CadastroUsuarioDTO`
+
+```json
+{
+  "nome": "Maria Silva",
+  "email": "maria@escola.edu.br",
+  "senha": "senha1234"
+}
+```
+
+**Respostas:**
+
+| Status | Descrição |
+|---|---|
+| `201 Created` | Usuário criado. Header `Location: /usuarios/{id}` |
+| `400 Bad Request` | Validação falhou |
+
+---
+
+## POST /usuarios/login
+
+Autentica o usuário e retorna um token JWT.
+
+**Autenticação:** não requerida
+
+**Body:** `LoginDTO`
+
+```json
+{
+  "email": "maria@escola.edu.br",
+  "senha": "senha1234"
+}
+```
+
+**Resposta `200 OK`:**
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9..."
+}
+```
+
+**Respostas de erro:**
+
+| Status | Descrição |
+|---|---|
+| `401 Unauthorized` | Credenciais inválidas |
+
+---
+
+## GET /usuarios/me
+
+Retorna os dados do usuário autenticado extraídos do token JWT.
+
+**Autenticação:** obrigatória
+
+**Resposta `200 OK`:**
+
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "nome": "Maria Silva",
+  "email": "maria@escola.edu.br"
+}
+```
+
+---
+
+## GET /usuarios
+
+Lista todos os usuários cadastrados.
+
+**Autenticação:** obrigatória
+
+**Resposta `200 OK`:** array de `ResponseUsuarioDTO`
+
+```json
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "nome": "Maria Silva",
+    "email": "maria@escola.edu.br"
+  }
+]
+```
+
+---
+
+## GET /usuarios/{id}
+
+Busca um usuário pelo UUID.
+
+**Autenticação:** obrigatória
+
+**Parâmetros:**
+
+| Nome | Tipo | Descrição |
+|---|---|---|
+| `id` | UUID (path) | Identificador do usuário |
+
+**Respostas:**
+
+| Status | Descrição |
+|---|---|
+| `200 OK` | `ResponseUsuarioDTO` |
+| `404 Not Found` | Usuário não encontrado |
+
+---
+
+## PUT /usuarios/{id}
+
+Atualiza nome e e-mail do usuário.
+
+**Autenticação:** obrigatória
+
+**Body:** `CadastroUsuarioDTO` (senha não é alterada por este endpoint)
+
+**Respostas:**
+
+| Status | Descrição |
+|---|---|
+| `204 No Content` | Atualizado com sucesso |
+| `404 Not Found` | Usuário não encontrado |
+
+---
+
+## PUT /usuarios/{id}/senha
+
+Atualiza a senha do usuário.
+
+**Autenticação:** obrigatória
+
+**Body:** `AtualizarSenhaDTO`
+
+```json
+{
+  "senhaAtual": "senha1234",
+  "novaSenha": "novaSenha5678"
+}
+```
+
+**Respostas:**
+
+| Status | Descrição |
+|---|---|
+| `204 No Content` | Senha atualizada |
+| `400 Bad Request` | Senha atual incorreta |
+| `404 Not Found` | Usuário não encontrado |
+
+---
+
+## DELETE /usuarios/{id}
+
+Remove um usuário.
+
+**Autenticação:** obrigatória
+
+**Respostas:**
+
+| Status | Descrição |
+|---|---|
+| `204 No Content` | Usuário removido |
+| `404 Not Found` | Usuário não encontrado |

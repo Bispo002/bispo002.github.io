@@ -1,0 +1,8 @@
+{
+  "label": "Arquitetura",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Estrutura de camadas, pacotes e fluxo de requisições."
+  }
+}
