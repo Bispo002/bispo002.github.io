@@ -7,8 +7,9 @@ const config: Config = {
   favicon: 'img/plano-facil-logo.svg',
   url: 'https://bispo002.github.io/',
   baseUrl: '/',
-  organizationName: 'Gabriel Bispo, Gabriel Bachega',
-  projectName: 'PlanoFácil',
+  organizationName: 'Bispo002',
+  projectName: 'bispo002.github.io',
+  trailingSlash: false,
   onBrokenLinks: 'throw',
 
   presets: [
