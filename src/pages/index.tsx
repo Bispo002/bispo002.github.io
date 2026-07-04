@@ -129,9 +129,8 @@ function LandingHero() {
             Desenvolvido utilizando Angular 19, SpringBoot e PostgreSQL, com deploy nas plataformas Vercel e Railway, e lading page em Docusaurus.
           </p>
           <div className="hero__cta">
-            <a href="https://github.com/gabrielbachega1/extensao-unifil" target="_blank" rel="noreferrer" className="btn btn--primary btn--lg">
-              {githubButtonIcon}
-              Código Fonte (GitHub)
+            <a href="https://planofacil-chi.vercel.app/" target="_blank" rel="noreferrer" className="btn btn--primary btn--lg">
+              Acessar Aplicação
             </a>
             <Link to="/docs/intro" className="btn btn--outline btn--lg">
               Documentação Técnica
@@ -228,7 +227,7 @@ function CTA() {
           <h2 className="cta-box__title">Explore o Código Fonte</h2>
           <p className="cta-box__subtitle">Acesse a documentação completa para entender as decisões arquiteturais, ou visite o GitHub para analisar o código do sistema.</p>
           <div className="cta-box__actions">
-            <a href="https://github.com/gabrielbachega1/extensao-unifil" target="_blank" rel="noreferrer" className="btn btn--primary btn--lg">Acessar Repositório</a>
+            <a href="https://github.com/gabrielbachega1/extensao-unifil" target="_blank" rel="noreferrer" className="btn btn--primary btn--lg">{githubButtonIcon} Acessar Repositório</a>
             <Link to="/docs/intro" className="btn btn--ghost-light btn--lg">Ler Documentação Técnica</Link>
           </div>
         </div>
