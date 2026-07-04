@@ -38,7 +38,7 @@ export default function StickyNavbar() {
           <Link to="/docs/intro" className={styles.linkDoc}>
             Documentação Técnica
           </Link>
-          <a href="https://github.com/seu-usuario/seu-repositorio" target="_blank" rel="noreferrer" className={styles.btnGithub}>
+          <a href="https://github.com/gabrielbachega1/extensao-unifil" target="_blank" rel="noreferrer" className={styles.btnGithub}>
             GitHub
           </a>
         </div>
